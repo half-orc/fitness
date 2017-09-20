@@ -69,8 +69,9 @@ class My_Model extends CI_Model
 	{
 		$table_pass ? $table = $table_pass : $table = $this->_modelTable;
 		
-		$this->db->update ( $table, $data_arr, $where_arr );
+		$res = $this->db->update ( $table, $data_arr, $where_arr );
 		$this->dbLog ();
+		return $res;
 	}
 	
 	/**

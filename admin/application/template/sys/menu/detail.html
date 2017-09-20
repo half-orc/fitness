@@ -1,0 +1,109 @@
+<!--{include file='inc/header.html'}-->
+<header class="demos-header">
+	<h1 class="demos-title">
+		<a href="<!--{base_url()}-->sys/menu"> 
+			<img src="<!--{base_url()}-->static/images/back.png"> <span>返回</span>
+		</a> 
+		<img id="masterMenu" src="<!--{base_url()}-->static/images/menu.png">
+		<p>菜单详情</p>
+	</h1>
+</header>
+<!--{include file='inc/menu.html'}-->
+<form id="dform">
+<div class="weui-cells weui-cells_form">
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">菜单名称</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" name="menu_name" type="text" required
+				value="<!--{isset($result) ? $result['menu_name'] : ''}-->">
+		</div>
+	</div>
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">上级ID</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" name="parent_id" type="text" value="<!--{isset($result) ? $result['parent_id'] : ''}-->" >	
+		</div>
+	</div>
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">model</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" name="model" type="text" value="<!--{isset($result) ? $result['model'] : ''}-->" >	
+		</div>
+	</div>
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">ctrl</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" name="ctrl" type="text" value="<!--{isset($result) ? $result['ctrl'] : ''}-->" >
+		</div>
+	</div>
+	
+	<div class="button_sp_area">
+		<a href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+        <!--{if isset($result)}--> 
+        <a href="javascript:;" class="weui-btn weui-btn_default"
+        url="<!--{base_url()}-->sys/menu/status/<!--{$result['menu_id']}-->/<!--{$result['disabled']}-->">
+        	<!--{if $result['disabled']=='false'}-->禁用<!--{else}-->启用<!--{/if}-->
+        </a>
+        <a href="javascript:;" url="<!--{base_url()}-->sys/menu/del/<!--{$result['menu_id']}-->"  onclick="return confirm('确认删除？');"
+        class="weui-btn weui-btn_warn">删除</a>
+        <!--{/if}-->
+    </div>
+</div>
+</form>
+<!--{include file='inc/footer.html'}-->
+<script>
+
+$('.weui-btn_primary').click(function(){
+	var url = "<!--{base_url()}-->sys/menu/save/<!--{isset($result) ? $result['menu_id'] : ''}-->";
+	$.ajax({
+		type:"POST",
+		data:$('#dform').serialize(),
+		url:url,
+		success:function(res){
+			if(res > 0){
+				$.toast("保存成功", function() {
+					window.location.reload();
+				});
+			}else{
+				$.toptip('保存失败', 'error');
+			}
+			
+		}
+	});
+});
+
+$('.weui-btn_default').click(function(){
+	var url = $(this).attr('url');
+	$.get(url,function(){
+	 	$.toast("保存成功", function() {
+	  		window.location.reload();
+	 	});
+	});
+	return false;
+});
+
+$('.weui-btn_warn').click(function(){
+	var url = $(this).attr('url');
+	$.confirm("确定删除该记录吗？", function() {
+	  $.get(url,function(){
+		  $.toast("删除成功", function() {
+			  window.location.href="<!--{base_url()}-->sys/menu";
+		  });
+	  });
+  	}, function() {
+  
+  	});
+	return false;
+});
+</script>

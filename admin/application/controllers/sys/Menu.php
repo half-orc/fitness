@@ -10,39 +10,44 @@ class Menu extends My_Controller {
 
     public function index($page = 1)
     {
-    	$page < 1 && $page = 1;
-    	$page = pageSize * ($page - 1);
-    	
-    	$data ['list'] = $this->menu_model->get(NULL,pageSize,$page,NULL,NULL,array('parent_id'=>'ASC','menu_id'=>'ASC'));
-    	// 分页
-    	$config ['base_url'] = site_url ( 'sys/menu/index' );
-    	$config ['total_rows'] = $data ['list'] ['totalNum'];
-    	$this->pagination->initialize ( $config );
-    	$data ['pages'] = $this->pagination->create_links ();
-    	
+    	$data = array();
         $this->template->display('sys/menu/list.html', $data);
     }
     
-    public function add($id = '')
+	public function getData($page = 1){
+		
+		$page < 1 && $page = 1;
+		$page = pageSize * ($page - 1);
+			
+		$search = $this->input->post('search');
+		$where = "WHERE 1";
+		$search && $where .= " AND menu_name LIKE '%{$search}%'";
+		$sql = "SELECT * FROM w_menu $where ORDER BY menu_id DESC LIMIT $page,".pageSize;
+		$data['list'] = $this->menu_model->get_all($sql);
+		$this->template->display ( 'sys/menu/data.html', $data );
+		
+	}
+    
+    public function detail($id = '')
     {
     	$data = array();
-    	$id && $data['detail'] = $this->menu_model->one(array('where'=>array('menu_id'=>$id)));
-    	$this->template->display('sys/menu/addMenu.html', $data);
+    	$id && $data['result'] = $this->menu_model->one(array('where'=>array('menu_id'=>$id)));
+    	$this->template->display('sys/menu/detail.html', $data);
     }
     
     public function save($id = '')
     {
     	$data = $this->input->post();
+    	$res = 0;
     	if ($id) {
-    			$this->menu_model->update($data,array('menu_id' => $id));
+    			$res = $this->menu_model->update($data,array('menu_id' => $id));
     	}else{
-    			$this->menu_model->add($data);
+    			$res = $this->menu_model->add($data);
     	}
     	//更新缓存
     	$menu = $this->menu_model->get_all_menu("disabled = 'false'");
     	$this->cache->file->save('menu', $menu, file_cache_time);
-    	
-    	redirect(base_url().'sys/menu/index');
+    	echo $res;
     }
     
     public function get_all_menu()
@@ -63,12 +68,7 @@ class Menu extends My_Controller {
     	{
     		$status = $status == 'false' ? 'true' : 'false';
     		$this->menu_model->update(array('disabled'=>$status) ,array('menu_id'=>(int)$id));
-    		redirect(base_url().'sys/menu/index');
-    	}
-    	else
-    	{
-    		show_error('参数错误');
-    	}    	
+    	}  	
     }
 
     public function del($id)

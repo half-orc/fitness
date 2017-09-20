@@ -1,14 +1,16 @@
-<!--{include file='inc/header.html'}-->
+<?php $this->display('inc/header.html', array (
+)); ?>
 <header class="demos-header">
 	<h1 class="demos-title">
-		<a href="<!--{base_url()}-->welcome"> 
-			<img src="<!--{base_url()}-->static/images/back.png"> <span>首页</span>
+		<a href="<?php echo base_url() ; ?>welcome"> 
+			<img src="<?php echo base_url() ; ?>static/images/back.png"> <span>首页</span>
 		</a> 
-		<img id="masterMenu" src="<!--{base_url()}-->static/images/menu.png">
-		<p>菜单列表</p>
+		<img id="masterMenu" src="<?php echo base_url() ; ?>static/images/menu.png">
+		<p>系统参数列表</p>
 	</h1>
 </header>
-<!--{include file='inc/menu.html'}-->
+<?php $this->display('inc/menu.html', array (
+)); ?>
 <div class="weui-search-bar" id="searchBar">
   <div class="weui-search-bar__form">
     <div class="weui-search-bar__box">
@@ -22,14 +24,15 @@
     </label>
   </div>
   <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
-  &nbsp;<img src="<!--{base_url()}-->static/images/add.png" onclick="window.location.href='<!--{base_url()}-->sys/menu/detail/'">
+  &nbsp;<img src="<?php echo base_url() ; ?>static/images/add.png" onclick="window.location.href='<?php echo base_url() ; ?>sys/param/detail/'">
 </div>
 <div class="weui-form-preview"></div>
 <div class="weui-loadmore">
   <i class="weui-loading"></i>
   <span class="weui-loadmore__tips">正在加载</span>
 </div>
-<!--{include file='inc/footer.html'}-->
+<?php $this->display('inc/footer.html', array (
+)); ?>
 <script>
 var page = 1;
 var loading = false;  //状态标记
@@ -38,11 +41,11 @@ function getData(pages){
 	$.ajax({
 		type:"POST",
 		data:{search:$('#searchInput').val()},
-		url:$('#host').val()+'sys/menu/getData/'+pages,
+		url:$('#host').val()+'sys/param/getData/'+pages,
 		success:function(res){
 			if(res.length > 10){
 				$('.weui-form-preview').append(res);
-				if(res.match(/weui-form-preview__bd/g).length < <!--{$pageSize}-->){
+				if(res.match(/weui-form-preview__bd/g).length < <?php echo $this->_vars->pageSize ; ?>){
 					$('.weui-loadmore').html('没有更多了');
 				}else{
 					loading = false;
