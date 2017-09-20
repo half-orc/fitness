@@ -1,0 +1,139 @@
+<!--{include file='inc/header.html'}-->
+<header class="demos-header">
+	<h1 class="demos-title">
+		<a href="<!--{base_url()}-->sys/admin"> 
+			<img src="<!--{base_url()}-->static/images/back.png"> <span>返回</span>
+		</a> 
+		<img id="masterMenu" src="<!--{base_url()}-->static/images/menu.png">
+		<p>用户详情</p>
+	</h1>
+</header>
+<!--{include file='inc/menu.html'}-->
+<form id="dform">
+<div class="weui-cells weui-cells_form">
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+          <label for="" class="weui-label">角色</label>
+        </div>
+        <div class="weui-cell__bd">
+          <select class="weui-select" id="role_id">
+          	<option value="0"></option>
+       		 <!--{if !empty($admin_role)}-->						          
+             <!--{foreach $admin_role as $key => $value}-->
+             <option value="<!--{$key}-->" <!--{if isset($result) && $key == $result['role_id']}-->selected<!--{/if}-->><!--{$value['role_name']}--></option>
+             <!--{/foreach}-->
+             <!--{/if}-->	
+          </select>
+        </div>
+     </div>
+     
+     <!--{if ! isset($result) || $result['role_id'] > 1}-->
+     <div class="weui-cell weui-cell_select weui-cell_select-after" id="storeItem">
+        <div class="weui-cell__hd">
+          <label for="" class="weui-label">分店</label>
+        </div>
+        <div class="weui-cell__bd">
+          <select class="weui-select" id="store_id">
+          <option value="0"></option>
+          <!--{if !empty($store_list)}-->						          
+  		  <!--{foreach $store_list as $k => $val}-->
+  		  <option value="<!--{$k}-->" <!--{if isset($result) && $k == $result['store_id']}-->selected<!--{/if}-->><!--{$val}--></option>
+  		  <!--{/foreach}-->
+  		  <!--{/if}-->	
+          </select>
+        </div>
+     </div>
+	 <!--{/if}-->
+
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">用户名</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="uname" type="text" 
+				value="<!--{isset($result) ? $result['uname'] : ''}-->">
+		</div>
+	</div>
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">真实姓名</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="name" type="text" 
+				value="<!--{isset($result) ? $result['name'] : ''}-->">
+		</div>
+	</div>
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">密码</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="passwd" type="password" >
+		</div>
+	</div>
+	
+	<div class="button_sp_area">
+		<a href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+        <!--{if isset($result)}--> 
+        <a href="javascript:;" url="<!--{base_url()}-->sys/admin/status/<!--{$result['admin_id']}-->/<!--{$result['disabled']}-->" 
+        class="weui-btn weui-btn_warn"><!--{if $result['disabled']=='0'}-->禁用<!--{else}-->启用<!--{/if}--></a>
+        <!--{/if}-->
+    </div>
+</div>
+</form>
+<!--{include file='inc/footer.html'}-->
+<script>
+$('#role_id').change(function(){
+	if($(this).val() == 1){
+		$('#storeItem').hide();
+	}else{
+		$('#storeItem').show();
+	}
+});
+$('.weui-btn_primary').click(function(){
+	if($('#role_id').val() < 1){
+		$.toptip('角色必填', 'error');
+		return false;
+	}
+	if($('#role_id').val() == 1 && ($('#store_id').val() < 1){
+		$.toptip('分店必填', 'error');
+		return false;
+	}
+	if($('#uname').val().length < 2){
+		$.toptip('用户名必填', 'error');
+		return false;
+	}
+	var url = "<!--{base_url()}-->sys/admin/save/<!--{isset($result) ? $result['admin_id'] : ''}-->";
+	$.ajax({
+		type:"POST",
+		data:$('#dform').serialize(),
+		url:url,
+		success:function(res){
+			if(res > 0){
+				$.toast("保存成功", function() {
+					window.location.href="<!--{base_url()}-->sys/admin";
+				});
+			}else{
+				$.toptip('保存失败', 'error');
+			}
+			
+		}
+	});
+});
+
+$('.weui-btn_warn').click(function(){
+	var url = $(this).attr('url');
+	$.confirm("确定删除该记录吗？", function() {
+	  $.get(url,function(){
+		  $.toast("删除成功", function() {
+			  window.location.href="<!--{base_url()}-->sys/param";
+		  });
+	  });
+  	}, function() {
+  
+  	});
+	return false;
+});
+</script>

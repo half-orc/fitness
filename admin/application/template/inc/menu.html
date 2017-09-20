@@ -1,0 +1,32 @@
+<div id="menu-list"  class="weui-popup__container">
+<div class="weui-popup__overlay"></div>
+	<div class="weui-cells weui-popup__modal">
+		<header class="demos-header">
+			<h1 class="demos-title">
+				<img src="<!--{base_url()}-->static/images/logo.png"> <span>后台管理系统</span> <img
+					id="closeMasterMenu" src="<!--{base_url()}-->static/images/close.png">
+			</h1>
+		</header>		
+		<!--{foreach $menu as $val}-->
+		<a class="weui-cell weui-cell_access" href="javascript:;">
+			<div class="weui-cell__bd">
+				<p><!--{$val['menu_name']}--></p>
+			</div>
+			<div class="weui-cell__ft"></div>
+		</a> 
+		<div class="child-menu">
+			<!--{if isset($val['child'])}-->
+			<!--{foreach $val['child'] as $value}-->
+			<div class="weui-flex">
+		      <div class="weui-flex__item">
+		      	<div class="placeholder">
+		      		<a href="<!--{base_url()}--><!--{$value['ctrl']}-->/<!--{$value['act']}-->"><!--{$value['menu_name']}--></a>
+		      	</div>
+		      </div>
+		    </div>
+			<!--{/foreach}-->
+			<!--{/if}-->
+		</div>
+		<!--{/foreach}-->
+	</div>
+</div>
