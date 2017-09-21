@@ -1,3 +1,4 @@
-#Wed Sep 20 21:54:42 CST 2017
 eclipse.preferences.version=1
 include_path=0;/fitness
+phpVersion=php5.4
+use_asp_tags_as_php=false
