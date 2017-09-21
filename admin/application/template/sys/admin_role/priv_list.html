@@ -1,4 +1,98 @@
 <!--{include file='inc/header.html'}-->
+<header class="demos-header">
+	<h1 class="demos-title">
+		<a href="<!--{base_url()}-->sys/admin_role"> 
+			<img src="<!--{base_url()}-->static/images/back.png"> <span>返回</span>
+		</a> 
+		<img id="masterMenu" src="<!--{base_url()}-->static/images/menu.png">
+		<p>角色权限列表</p>
+	</h1>
+</header>
+<!--{include file='inc/menu.html'}-->
+<form id="dform">
+	<!--{if !empty($tree)}-->
+    <!--{foreach $tree as $v}-->
+	<div class="weui-flex">
+      <div class="weui-flex__item">
+      	<div class="placeholder weui-cells weui-cells_checkbox">
+      		<label class="weui-cell weui-check__label">
+      		<div class="weui-cell__hd">
+	          <input class="weui-check" type="checkbox" name="data[<!--{$v['menu_id']}-->][menu_id]" value="<!--{$v['menu_id']}-->" <!--{if isset($ctrl[$v['ctrl']])}-->checked="checked"<!--{/if}--> />
+	          <i class="weui-icon-checked"></i>
+	        </div>
+      		<div class="weui-cell__bd">
+	          <p><!--{$v['menu_name']}--></p>
+	        </div>
+	        </label>
+      	</div>
+      </div>
+    </div>
+    <!--{if !empty($v['child'])}-->
+	<div class="weui-flex weui-cells_checkbox">
+		<!--{set $i = 0}-->
+		<!--{foreach $v['child'] as $val}-->
+	      <div class="weui-flex__item">
+	      	<div class="placeholder small-font  weui-cells_checkbox">
+	      		<label class="weui-cell weui-check__label">
+	      		<div class="weui-cell__hd">
+	      		  <input class="weui-check" type="checkbox" name="data[<!--{$val['menu_id']}-->][menu_id]" value="<!--{$val['menu_id']}-->" <!--{if isset($ctrl[$val['ctrl']])}-->checked="checked"<!--{/if}--> />
+		          <i class="weui-icon-checked"></i>
+		        </div>
+	      		<div class="weui-cell__bd">
+		          <p><!--{$val['menu_name']}--></p>
+		        </div>
+		        </label>
+	      	</div>
+	      </div>
+	      <!--{set $i++}-->
+	      <!--{if $i%3==0}-->
+	      </div>
+	      <div class="weui-flex weui-cells_checkbox">
+	      <!--{/if}-->
+	    <!--{/foreach}-->  
+	    <!--{if $i%3==2}-->
+	      <div class="weui-flex__item"></div>
+	    <!--{/if}-->
+	</div>
+	<!--{/if}-->
+	<!--{/foreach}-->
+	<!--{/if}-->
+</form>
+<!--{include file='inc/footer.html'}-->
+<script>
+$('.weui-btn_primary').click(function(){
+	var url = "<!--{base_url()}-->sys/admin_role/save/<!--{isset($result) ? $result['role_id'] : ''}-->";
+	$.ajax({
+		type:"POST",
+		data:$('#dform').serialize(),
+		url:url,
+		success:function(res){
+			if(res > 0){
+				$.toast("保存成功", function() {
+					window.location.href="<!--{base_url()}-->sys/admin_role";
+				});
+			}else{
+				$.toptip('保存失败', 'error');
+			}
+		}
+	});
+	return false;
+});
+
+$('.weui-btn_default').click(function(){
+	var url = $(this).attr('url');
+	$.get(url,function(){
+	 	$.toast("保存成功", function() {
+	  		window.location.reload();
+	 	});
+	});
+	return false;
+});
+</script>
+
+
+
+<!--{include file='inc/header.html'}-->
 
 <!-- BEGIN Content -->
 <div id="main-content">

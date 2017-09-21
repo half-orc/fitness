@@ -76,7 +76,7 @@ $('.weui-btn_primary').click(function(){
 		success:function(res){
 			if(res > 0){
 				$.toast("保存成功", function() {
-					window.location.href="<?php echo base_url() ; ?>sys/menu";
+					window.location.reload();
 				});
 			}else{
 				$.toptip('保存失败', 'error');

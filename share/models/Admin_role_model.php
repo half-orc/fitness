@@ -14,9 +14,9 @@ class Admin_role_model extends My_Model {
     public function save($data,$id = '')
     {
     	if ($id) {
-    		$this->update($data, array('role_id' => $id));
+    		return $this->update($data, array('role_id' => $id));
     	}else{
-    		$this->add(array_filter($data));
+    		return $this->add(array_filter($data));
     	}
     }   
 

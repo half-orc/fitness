@@ -1,0 +1,23 @@
+	<!--{if !empty($list)}-->
+    <!--{foreach $list as $key => $value}-->
+	<div class="weui-form-preview__bd" onClick="javascript:window.location.href='<!--{base_url()}-->sys/admin_role/detail/<!--{$value['role_id']}-->'">
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">角色名称</label> 
+			<span class="weui-form-preview__value">
+				<!--{if $value['disabled']=='1'}-->
+					<s><!--{$value['role_name']}--></s>
+				<!--{else}-->	
+					<!--{$value['role_name']}-->
+				<!--{/if}-->
+			</span>
+		</div>
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">描述</label> <span
+				class="weui-form-preview__value"><!--{$value['description']}--></span>
+		</div>
+		<a href="<!--{base_url()}-->sys/admin_role/priv/<!--{$value['role_id']}-->" class="weui-btn weui-btn_mini weui-btn_primary">查看权限</a>
+	</div>
+	<div class="weui-form-preview__ft">
+	</div>
+	<!--{/foreach}-->
+    <!--{/if}-->

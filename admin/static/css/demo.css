@@ -38,13 +38,16 @@ body, html {
     margin-top: 8px;
 }
 .placeholder {
-  margin: 2px;
-  padding: 0 10px;
-  background-color: #ebebeb;
-  height: 2.3em;
-  line-height: 2.3em;
-  text-align: center;
-  color: #cfcfcf;
+    margin: 2px;
+    padding: 0 10px;
+    background-color: #fff;
+    height: 2.3em;
+    line-height: 2.3em;
+    text-align: center;
+    color: #000;
+}
+.small-font{
+	font-size:12px;
 }
 #menu-list .child-menu{
 	display:none;
@@ -91,6 +94,22 @@ body, html {
     display: flex;
     box-sizing: border-box;
     background-color: #efeff4;	
+}
+.weui-check__label{
+	padding:0;
+}
+.weui-flex__item .weui-cell__bd p{
+	text-align:left;
+}
+.weui-flex__item .weui-cells .weui-cell__bd p{
+	color: green;
+    font-weight: bold;
+}
+.weui-flex__item .weui-cells .weui-cell__hd .weui-icon-checked{
+	margin-bottom: 8px;
+}
+.weui-flex__item .weui-cell__hd .weui-icon-checked{
+	margin-bottom: 3px;
 }
 footer {
   text-align: center;

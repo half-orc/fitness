@@ -9,19 +9,19 @@ public function __construct()
 		$this->load->model ( 'admin_role_priv_model' );
 	}
 	
-	public function index($page = 1)
-	{
+	public function index(){
+		$this->template->display ( 'sys/admin_role/list.html' );
+	}
+	
+	public function getData($page = 1){
+		
 		$page < 1 && $page = 1;
 		$page = pageSize * ($page - 1);
-		 
-		$data ['list'] = $this->admin_role_model->get(NULL,pageSize,$page);
-		// 分页
-		$config ['base_url'] = site_url ( 'sys/admin_role/index' );
-		$config ['total_rows'] = $data ['list'] ['totalNum'];
-		$this->pagination->initialize ( $config );
-		$data ['pages'] = $this->pagination->create_links ();
+			
+		$sql = "SELECT * FROM w_admin_role LIMIT $page,".pageSize;
+		$data['list'] = $this->admin_role_model->get_all($sql);
+		$this->template->display ( 'sys/admin_role/data.html', $data );
 		
-		$this->template->display ( 'sys/admin_role/list.html', $data );
 	}
 	
 	public function priv($id = '')
@@ -75,9 +75,7 @@ public function __construct()
 	public function save($id = '')
 	{
 		$data = $this->input->post ();
-		$this->admin_role_model->save ( $data, $id );
-
-		redirect ( base_url () . 'sys/admin_role' );
+		echo $this->admin_role_model->save ( $data, $id );
 	}
 	
 	public function save_priv($id = '')
