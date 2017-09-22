@@ -1,3 +1,7 @@
 .settings/
 /.project
 /.buildpath
+/admin/public/
+/admin/data/
+/admin/application/cache/
+
