@@ -15,20 +15,17 @@ class Area extends My_Controller
 	
 	public function index($page = 1)
 	{
-		
+		$this->template->display ( 'sys/area/list.html' );
+	}
+	
+	public function getData($page = 1){
+	
 		$page < 1 && $page = 1;
 		$page = pageSize * ($page - 1);
-		 
-		$sql_arr['data_sql'] = "SELECT a.*,b.name AS pname FROM w_area a LEFT JOIN w_area b ON a.pid = b.area_id limit $page," . pageSize;
-		$sql_arr['count_sql'] = "SELECT count(1) as cnt FROM w_area";
-		$data ['list'] = $this->area_model->get_page_list_by_sql($sql_arr);
-		// 分页
-		$config ['base_url'] = site_url ( 'sys/area/index' );
-		$config ['total_rows'] = $data ['list'] ['totalNum'];
-		$this->pagination->initialize ( $config );
-		$data ['pages'] = $this->pagination->create_links ();
-		
-		$this->template->display ( 'sys/area/list.html', $data );
+			
+		$sql = "SELECT a.*,b.name AS pname FROM w_area a LEFT JOIN w_area b ON a.pid = b.area_id limit $page,".pageSize;
+		$data['list'] = $this->area_model->get_all($sql);
+		$this->template->display ( 'sys/area/data.html', $data );
 	}
 	
 	public function detail($area_id = '')
@@ -50,19 +47,18 @@ class Area extends My_Controller
 		$this->template->display ( 'sys/area/detail.html', $data );
 	}
 	
-	public function get_area_by_city($city_id = 0){
-		$city_id = intval($city_id);
-		if($city_id){
-			$res = $this->area_model->one(array('where'=>array('pid'=>$city_id)),1);
-			echo json_encode($res);
-		}
-	}
+// 	public function get_area_by_city($city_id = 0){
+// 		$city_id = intval($city_id);
+// 		if($city_id){
+// 			$res = $this->area_model->one(array('where'=>array('pid'=>$city_id)),1);
+// 			echo json_encode($res);
+// 		}
+// 	}
 	
 	public function save($id = '')
 	{
 		$data = $this->input->post ();
-		$this->area_model->save ( $data, $id );
-		redirect ( base_url () . 'sys/area' );
+		echo $this->area_model->save ( $data, $id );
 	}
 	
 	public function del($id)
@@ -73,9 +69,9 @@ class Area extends My_Controller
 			$this->area_model->del ( array (
 					'area_id' => $id 
 			) );
-			redirect ( base_url () . 'sys/area' );
+			echo json_encode(array('status'=>'1','msg'=>'删除成功'));
 		}else{
-			show_error('该地区有分店,请先删除分店.');
+			echo json_encode(array('status'=>'0','msg'=>'该地区有分店,请先删除分店'));
 		}
 	}
 

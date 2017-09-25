@@ -1,0 +1,16 @@
+	<!--{if !empty($list)}-->
+    <!--{foreach $list as $key => $value}-->
+	<div class="weui-form-preview__bd" onClick="javascript:window.location.href='<!--{base_url()}-->sys/area/detail/<!--{$value['area_id']}-->'">
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">上级城市</label> <span
+				class="weui-form-preview__value"><!--{$value['pname']}--></span>
+		</div>
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">名称</label> <span
+				class="weui-form-preview__value"><!--{$value['name']}--></span>
+		</div>
+	</div>
+	<div class="weui-form-preview__ft">
+	</div>
+	<!--{/foreach}-->
+    <!--{/if}-->

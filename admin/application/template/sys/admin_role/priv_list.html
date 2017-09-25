@@ -27,49 +27,54 @@
       	</div>
       </div>
     </div>
+    <div class="child-priv">
     <!--{if !empty($v['child'])}-->
-	<div class="weui-flex weui-cells_checkbox">
-		<!--{set $i = 0}-->
-		<!--{foreach $v['child'] as $val}-->
-	      <div class="weui-flex__item">
-	      	<div class="placeholder small-font  weui-cells_checkbox">
-	      		<label class="weui-cell weui-check__label">
-	      		<div class="weui-cell__hd">
-	      		  <input class="weui-check" type="checkbox" name="data[<!--{$val['menu_id']}-->][menu_id]" value="<!--{$val['menu_id']}-->" <!--{if isset($ctrl[$val['ctrl']])}-->checked="checked"<!--{/if}--> />
-		          <i class="weui-icon-checked"></i>
-		        </div>
-	      		<div class="weui-cell__bd">
-		          <p><!--{$val['menu_name']}--></p>
-		        </div>
-		        </label>
-	      	</div>
-	      </div>
-	      <!--{set $i++}-->
-	      <!--{if $i%3==0}-->
-	      </div>
-	      <div class="weui-flex weui-cells_checkbox">
-	      <!--{/if}-->
-	    <!--{/foreach}-->  
-	    <!--{if $i%3==2}-->
-	      <div class="weui-flex__item"></div>
-	    <!--{/if}-->
-	</div>
+		<div class="weui-flex weui-cells_checkbox">
+			<!--{set $i = 0}-->
+			<!--{foreach $v['child'] as $val}-->
+		      <div class="weui-flex__item">
+		      	<div class="placeholder small-font  weui-cells_checkbox">
+		      		<label class="weui-cell weui-check__label">
+		      		<div class="weui-cell__hd">
+		      		  <input class="weui-check" type="checkbox" name="data[<!--{$val['menu_id']}-->][menu_id]" value="<!--{$val['menu_id']}-->" <!--{if isset($ctrl[$val['ctrl']])}-->checked="checked"<!--{/if}--> />
+			          <i class="weui-icon-checked"></i>
+			        </div>
+		      		<div class="weui-cell__bd">
+			          <p><!--{$val['menu_name']}--></p>
+			        </div>
+			        </label>
+		      	</div>
+		      </div>
+		      <!--{set $i++}-->
+		      <!--{if $i%3==0}-->
+		      </div>
+		      <div class="weui-flex weui-cells_checkbox">
+		      <!--{/if}-->
+		    <!--{/foreach}-->  
+		    <!--{if $i%3==2}-->
+		      <div class="weui-flex__item"></div>
+		    <!--{/if}-->
+		</div>
 	<!--{/if}-->
+	</div>
 	<!--{/foreach}-->
 	<!--{/if}-->
 </form>
+<div class="button_sp_area">
+	<a href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+</div>
 <!--{include file='inc/footer.html'}-->
 <script>
 $('.weui-btn_primary').click(function(){
-	var url = "<!--{base_url()}-->sys/admin_role/save/<!--{isset($result) ? $result['role_id'] : ''}-->";
+	var url = "<!--{base_url()}-->sys/admin_role/save_priv/<!--{$role_id}-->";
 	$.ajax({
 		type:"POST",
 		data:$('#dform').serialize(),
 		url:url,
 		success:function(res){
-			if(res > 0){
+			if(res == 'success'){
 				$.toast("保存成功", function() {
-					window.location.href="<!--{base_url()}-->sys/admin_role";
+					window.location.reload();
 				});
 			}else{
 				$.toptip('保存失败', 'error');
@@ -78,69 +83,4 @@ $('.weui-btn_primary').click(function(){
 	});
 	return false;
 });
-
-$('.weui-btn_default').click(function(){
-	var url = $(this).attr('url');
-	$.get(url,function(){
-	 	$.toast("保存成功", function() {
-	  		window.location.reload();
-	 	});
-	});
-	return false;
-});
 </script>
-
-
-
-<!--{include file='inc/header.html'}-->
-
-<!-- BEGIN Content -->
-<div id="main-content">
-    <!-- BEGIN Main Content -->
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="box">
-                <div class="box-title">
-                    <h3><i class="icon-table"></i> 角色权限列表</h3>
-
-                    <div class="box-tool">
-                        <a href="<!--{base_url()}-->sys/admin_role" class="btn btn-info">返回上一级</a>
-                    </div>
-                </div>
-                <div class="box-content">
-                	<form name="addForm" id="addForm" method="post" action="<!--{base_url()}-->sys/admin_role/save_priv/<!--{isset($role_id) ? $role_id : ''}-->">
-                    <div class="clearfix"></div>
-                    <!--{if !empty($tree)}-->
-                    <!--{foreach $tree as $v}-->
-                    <div>
-	                   	<input type="checkbox" name="data[<!--{$v['menu_id']}-->][menu_id]" value="<!--{$v['menu_id']}-->" <!--{if isset($ctrl[$v['ctrl']])}-->checked="checked"<!--{/if}--> /><!--{$v['menu_name']}-->
-	                   	<table class="table">
-	                        <!--{if !empty($v['child'])}-->
-	                        <tr>
-	                        <!--{foreach $v['child'] as $val}-->
-	                           <td>
-	                           		<input type="checkbox" name="data[<!--{$val['menu_id']}-->][menu_id]" value="<!--{$val['menu_id']}-->" <!--{if isset($ctrl[$val['ctrl']])}-->checked="checked"<!--{/if}--> /><!--{$val['menu_name']}-->
-	                           </td>
-	                        <!--{/foreach}-->
-	                        </tr>
-	                        <!--{/if}-->	                        
-	                    </table>
-                    </div>
-                   	<!--{/foreach}-->
-                   	<div>
-						<input type="submit" class="btn btn-primary" id="button" value="保存"> 
-                   	</div>
-                    <!--{/if}-->
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END Main Content -->
-
-    <!--{include file='inc/copyright.html'}-->
-
-    <a id="btn-scrollup" class="btn btn-circle btn-large" href="#"><i class="icon-chevron-up"></i></a>
-</div>
-<!-- END Content -->
-<!--{include file='inc/footer.html'}-->

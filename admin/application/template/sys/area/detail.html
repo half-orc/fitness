@@ -1,59 +1,82 @@
 <!--{include file='inc/header.html'}-->
-<!-- BEGIN Content -->
-<div id="main-content">
-    <!-- BEGIN Main Content -->
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="box">
-                <div class="box-title">
-                    <h3><i class="icon-comment"></i> 地区管理</h3>
-
-                    <div class="box-tool">
-                    	<a href="<!--{base_url()}-->sys/area" class="btn btn-info">返回上一级</a>
-                    </div>
-                </div>
-                <div class="box-content">
-                    <form name="addForm" id="addForm" method="post" action="<!--{base_url()}-->sys/area/save/<!--{isset($result) ? $result['area_id'] : ''}-->">
-                        <table class="table table-advance">
-                            <tr>
-                                <td width="100" align="right">上级城市：</td>
-                                <td><label for="city"></label>
-                                    <select name="pid" id="pid" class="form-control">
-						          	  <option value="0">无</option>
-									  <!--{if !empty($city)}-->						          
-		                      		  <!--{foreach $city as $value}-->
-		                      		  <option value="<!--{$value['area_id']}-->" <!--{if isset($result) && $result['pid'] == $value['area_id']}-->selected<!--{/if}-->><!--{$value['name']}--></option>
-		                      		  <!--{/foreach}-->
-		                      		  <!--{/if}-->	
-									</select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="100" align="right">城市/地区：</td>
-                                <td><label for="username"></label>
-                                    <input type="text" name="name" id="name" required value="<!--{isset($result) ? $result['name'] : ''}-->" ></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                	<input type="submit" class="btn btn-primary seperate_button" id="button" value="保存">
-                                	<!--{if isset($result)}-->
-                                	<a class="btn btn-danger" title="Delete" href="<!--{base_url()}-->sys/area/del/<!--{$result['area_id']}-->" onclick="return confirm('确认删除？');">删除</a>
-                                	<!--{/if}-->
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-            </div>
+<header class="demos-header">
+	<h1 class="demos-title">
+		<a href="<!--{base_url()}-->sys/area"> 
+			<img src="<!--{base_url()}-->static/images/back.png"> <span>返回</span>
+		</a> 
+		<img id="masterMenu" src="<!--{base_url()}-->static/images/menu.png">
+		<p>地区详情</p>
+	</h1>
+</header>
+<!--{include file='inc/menu.html'}-->
+<form id="dform">
+<div class="weui-cells weui-cells_form">
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+          <label for="" class="weui-label">上级城市</label>
         </div>
+        <div class="weui-cell__bd">
+          <select class="weui-select" name="pid">
+          		<!--{if !empty($city)}-->						          
+	   		  <!--{foreach $city as $value}-->
+	   		  <option value="<!--{$value['area_id']}-->" <!--{if isset($result) && $result['pid'] == $value['area_id']}-->selected<!--{/if}-->><!--{$value['name']}--></option>
+	   		  <!--{/foreach}-->
+	   		  <!--{/if}-->	
+          </select>
+        </div>
+      </div>
+
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">城市/地区</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" name="name" type="text" required value="<!--{isset($result) ? $result['name'] : ''}-->">
+		</div>
+	</div>
+	
+	<div class="button_sp_area">
+		<a href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+        <!--{if isset($result)}--> 
+        <a href="javascript:;" url="<!--{base_url()}-->sys/area/del/<!--{$result['area_id']}-->" class="weui-btn weui-btn_warn">删除</a>
+        <!--{/if}-->
     </div>
-
-    <!-- END Main Content -->
-
-    <!--{include file='inc/copyright.html'}-->
-
-    <a id="btn-scrollup" class="btn btn-circle btn-large" href="#"><i class="icon-chevron-up"></i></a>
 </div>
-<!-- END Content -->
-
+</form>
 <!--{include file='inc/footer.html'}-->
+<script>
+$('.weui-btn_primary').click(function(){
+	var url = "<!--{base_url()}-->sys/area/save/<!--{isset($result) ? $result['area_id'] : ''}-->";
+	$.ajax({
+		type:"POST",
+		data:$('#dform').serialize(),
+		url:url,
+		success:function(res){
+			if(res > 0){
+				$.toast("保存成功", function() {
+					window.location.href="<!--{base_url()}-->sys/area";
+				});
+			}else{
+				$.toptip('保存失败', 'error');
+			}
+		}
+	});
+	return false;
+});
+
+$('.weui-btn_warn').click(function(){
+	var url = $(this).attr('url');
+	$.confirm("确认删除该地区？", function() {
+		$.get(url,function(res){
+			if(res.status == '1'){
+			 	$.toast(res.msg, function() {
+			 		window.location.href="<!--{base_url()}-->sys/area";
+			 	});
+			}else{
+				$.toptip(res.msg, 'error');
+			}
+		},"JSON");
+	});
+	return false;
+});
+</script>

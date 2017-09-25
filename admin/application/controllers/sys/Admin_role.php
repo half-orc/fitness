@@ -116,8 +116,7 @@ public function __construct()
 			foreach ($result['del'] as $v)
 				$this->db->delete('admin_role_priv', $v);
 		}
-	
-		redirect ( base_url () . 'sys/admin_role/priv/' . $id );
+		echo 'success';
 	}	
 	
 	public function status($id, $status)

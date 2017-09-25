@@ -17,9 +17,9 @@ class Area_model extends My_Model {
     	$insertArr['name'] = $data['name'];
     
     	if ($id) {
-    		$this->update($insertArr, array('area_id' => $id));
+    		return $this->update($insertArr, array('area_id' => $id));
     	}else{
-    		$this->add($insertArr);
+    		return $this->add($insertArr);
     	}
     }    
 }

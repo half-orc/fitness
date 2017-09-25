@@ -4,7 +4,7 @@
     <title>热炼私坊健身</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=2.0" />
-	 <link rel="stylesheet" type="text/css" href="/static/css/weui.css"/>
+	 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
 </head>
 <body>
 <div class="weui-msg">

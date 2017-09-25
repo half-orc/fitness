@@ -1,18 +1,18 @@
 $(function () {
-	//一级：全选、取消
-	$('#addForm>div>input').click(function(){
-		$(this).next('.table').find('input').prop('checked',this.checked);
+	$(".weui-flex:not('.weui-cells_checkbox')").on('click',function(){
+		if($(this).find('input').is(':checked')){
+			$(this).find('input').prop("checked", false);
+			$(this).next('.child-priv').find('input').prop("checked", false);
+		}else{
+			$(this).find('input').prop("checked", true);
+			$(this).next('.child-priv').find('input').prop("checked", true);
+		}
+		return false;
 	});
 	
-	//二级：
-//	$('.priv>input').click(function(){
-//		if(this.checked)
-//			$(this).parent('div').prev('input').prop('checked',this.checked).parents('.table').prev('input').prop('checked',this.checked);
-//	});
-	//
-	$('.table').on('click','input',function(){
+	$('.child-priv').on('click','input',function(){
 		if($(this).is(':checked')) {
-			$(this).parents('.table').prev('input').attr("checked", true);
+			$(this).parents('.child-priv').prev(".weui-flex:not('.weui-cells_checkbox')").find('input').prop("checked", true);
 		}
 	});
 })

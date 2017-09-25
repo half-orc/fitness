@@ -111,6 +111,9 @@ body, html {
 .weui-flex__item .weui-cell__hd .weui-icon-checked{
 	margin-bottom: 3px;
 }
+.button_sp_area{
+	margin-top:20px;
+}
 footer {
   text-align: center;
   font-size: 14px;
