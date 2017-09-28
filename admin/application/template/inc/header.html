@@ -9,5 +9,10 @@
 <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
 <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
 <link rel="stylesheet" href="<!--{base_url()}-->static/css/demo.css">
+<!--{if isset($headerCss) && !empty($headerCss)}-->
+<!--{foreach $headerCss as $key => $value}-->
+<link href="<!--{base_url()}-->static/css/<!--{$value}-->" rel="stylesheet">
+<!--{/foreach}-->
+<!--{/if}-->
 </head>
 <body>

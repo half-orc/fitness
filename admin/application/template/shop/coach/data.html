@@ -1,0 +1,24 @@
+	<!--{if !empty($list)}-->
+    <!--{foreach $list as $key => $value}-->
+	<div class="weui-form-preview__bd" onClick="javascript:window.location.href='<!--{base_url()}-->shop/coach/detail/<!--{$value['coach_id']}-->'">
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">真实姓名</label> <span
+				class="weui-form-preview__value"><!--{$value['realname']}--></span>
+		</div>
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">显示名</label> <span
+				class="weui-form-preview__value"><!--{$value['coach_name']}--></span>
+		</div>
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">分店</label> <span
+				class="weui-form-preview__value"><!--{$store_list[$value['store_id']]}--></span>
+		</div>
+		<div class="weui-form-preview__item">
+			<label class="weui-form-preview__label">状态</label> <span
+				class="weui-form-preview__value"><!--{if $value['disabled']=='0'}-->启用<!--{else}-->禁用<!--{/if}--></span>
+		</div>
+	</div>
+	<div class="weui-form-preview__ft">
+	</div>
+	<!--{/foreach}-->
+    <!--{/if}-->

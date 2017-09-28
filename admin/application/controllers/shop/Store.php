@@ -15,21 +15,18 @@ class Store extends My_Controller
 	
 	public function index($page = 1)
 	{
+		$this->template->display ( 'shop/store/list.html' );
+	}
+	
+	public function getData($page = 1){
+	
 		$page < 1 && $page = 1;
 		$page = pageSize * ($page - 1);
-		 
-		$where = array();
-		if($this->_user['role_id'] != 1){
-			$where = array('store_id'=>$this->_user['store_id']);
-		}
-		$data ['list'] = $this->store_model->get($where,pageSize,$page);
-		// 分页
-		$config ['base_url'] = site_url ( 'shop/store/index' );
-		$config ['total_rows'] = $data ['list'] ['totalNum'];
-		$this->pagination->initialize ( $config );
-		$data ['pages'] = $this->pagination->create_links ();
-		
-		$this->template->display ( 'shop/store/list.html', $data );
+			
+		$sql = "SELECT * FROM w_store ORDER BY store_id DESC LIMIT $page,".pageSize;
+		$data['list'] = $this->store_model->get_all($sql);
+		$this->template->display ( 'shop/store/data.html', $data );
+	
 	}
 	
 	public function detail($store_id = '')
@@ -54,9 +51,10 @@ class Store extends My_Controller
 		}
 		//一级城市
 		$data['city'] = $this->area_model->one(array('where'=>array('pid'=>'0')),1);
+		$data['headerCss'] = array('../assets/umeditor/themes/default/css/umeditor.css');
 		$data['footerJs'] = array(
-				'../assets/ueditor/ueditor.config.js',
-				'../assets/ueditor/ueditor.all.js',
+				'../assets/umeditor/umeditor.config.js',
+				'../assets/umeditor/umeditor.min.js',
 				'astore.js'
 		);
 		$this->template->display ( 'shop/store/detail.html', $data );
@@ -84,7 +82,7 @@ class Store extends My_Controller
 			$isMoved &&	$data['img1'] = base_url().'upload/store/'.$file_name;
 		}
 		$this->store_model->save ( $data, $store_id );
-		redirect ( base_url () . 'shop/store' );
+		$this->template->display('msg.html', array('status'=>'1','msg'=>'保存成功','url'=>base_url().'shop/store'));
 	}
 	
 	public function status($id, $status)
@@ -93,11 +91,6 @@ class Store extends My_Controller
 		{
 			$status = $status == '0' ? '1' : '0';
 			$this->store_model->update(array('disabled'=>$status) ,array('store_id'=>(int)$id));
-			redirect(base_url().'shop/store');
-		}
-		else
-		{
-			show_error('参数错误');
 		}
 	}	
 	

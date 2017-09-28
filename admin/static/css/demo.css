@@ -114,6 +114,10 @@ body, html {
 .button_sp_area{
 	margin-top:20px;
 }
+.help-block{
+	color: #bbb;
+    font-size: 12px;
+}
 footer {
   text-align: center;
   font-size: 14px;

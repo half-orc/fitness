@@ -16,7 +16,7 @@
           <label for="" class="weui-label">角色</label>
         </div>
         <div class="weui-cell__bd">
-          <select class="weui-select" id="role_id">
+          <select class="weui-select" name="role_id" id="role_id">
           	<option value="0"></option>
        		 <!--{if !empty($admin_role)}-->						          
              <!--{foreach $admin_role as $key => $value}-->
@@ -33,7 +33,7 @@
           <label for="" class="weui-label">分店</label>
         </div>
         <div class="weui-cell__bd">
-          <select class="weui-select" id="store_id">
+          <select class="weui-select" name="store_id" id="store_id">
           <option value="0"></option>
           <!--{if !empty($store_list)}-->						          
   		  <!--{foreach $store_list as $k => $val}-->

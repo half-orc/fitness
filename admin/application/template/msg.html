@@ -1,0 +1,21 @@
+<!--{include file='inc/header.html'}-->
+<div class="weui-msg">
+  <div class="weui-msg__icon-area">
+  		<!--{if $status == '1'}-->
+  		<i class="weui-icon-success weui-icon_msg"></i>
+  		<!--{else}-->
+		<i class="weui-icon-warn weui-icon_msg"></i>
+  		<!--{/if}-->
+  </div>
+  <div class="weui-msg__text-area">
+    <h2 class="weui-msg__title"><!--{isset($msg)?$msg:''}--></h2>
+    <p class="weui-msg__desc"><!--{isset($info)?$info:''}--></p>
+  </div>
+  <div class="weui-msg__opr-area">
+    <p class="weui-btn-area">
+      <a href="<!--{isset($url)?$url:'javascript:;'}-->" class="weui-btn weui-btn_primary">返回</a>
+      <a href="<!--{base_url()}-->" class="weui-btn weui-btn_default">首页</a>
+    </p>
+  </div>
+</div>
+<!--{include file='inc/footer.html'}-->

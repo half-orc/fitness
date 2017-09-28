@@ -20,35 +20,40 @@ class Coach extends My_Controller
 	
 	public function index($page = 1)
 	{
+		$data['store_list'] = $this->store_model->get_store_list();
+		
+		$this->template->display ( 'shop/coach/list.html', $data );
+	}
+	
+	public function getData($page = 1){
+	
 		$data['realname'] = $realname = $this->input->post('realname');
 		$data['coach_name'] = $coach_name = $this->input->post('coach_name');
 		$data['store_id'] = $store_id = $this->input->post('store_id');
 		
-		$where = $like_where = array();
+		$where = "WHERE 1";
+		$like_where = '';
 		
-		$realname && $like_where['realname'] = $realname;
-		$coach_name && $like_where['coach_name'] = $coach_name;
-		
-		$data['store_list'] = $this->store_model->get_store_list();
+		$realname && $like_where .= " AND realname like '%{$realname}%'";
+		$coach_name && $like_where .= " AND coach_name like '%{$coach_name}%'";
 		
 		if ($this->_user['role_id'] == 1){
-			$store_id && $where['store_id'] = $store_id;
+			$store_id && $where .= " AND store_id = {$store_id}";
 		}elseif($this->_user['store_id']){
 			//分店管理员只可查询该分店下的教练
-			$where['store_id'] = $this->_user['store_id'];
+			$where .= " AND store_id = {$this->_user['store_id']}";
 		}
 		
 		$page < 1 && $page = 1;
 		$page = pageSize * ($page - 1);
-			
-		$data ['list'] = $this->coach_model->get($where,pageSize,$page,$like_where);
-		// 分页
-		$config ['base_url'] = site_url ( 'shop/coach/index' );
-		$config ['total_rows'] = $data ['list'] ['totalNum'];
-		$this->pagination->initialize ( $config );
-		$data ['pages'] = $this->pagination->create_links ();
 		
-		$this->template->display ( 'shop/coach/list.html', $data );
+		$sql = "SELECT * FROM w_coach $where $like_where limit $page," . pageSize;
+		
+		$data['list'] = $this->coach_model->get_all($sql);
+		$data['store_list'] = $this->store_model->get_store_list();
+		
+		$this->template->display ( 'shop/coach/data.html', $data );
+	
 	}
 	
 	public function detail($coach_id = '')
@@ -93,8 +98,8 @@ class Coach extends My_Controller
 		}
 		
 		$this->coach_model->save ( $data, $id );
-
-		redirect ( base_url () . 'shop/coach' );
+		$this->template->display('msg.html', array('status'=>'1','msg'=>'保存成功','url'=>base_url().'shop/coach'));
+// 		redirect ( base_url () . 'shop/coach' );
 	}
 	
 	public function status($id, $status)
@@ -103,11 +108,6 @@ class Coach extends My_Controller
 		{
 			$status = $status == '0' ? '1' : '0';
 			$this->coach_model->update(array('disabled'=>$status) ,array('coach_id'=>$id));
-			redirect(base_url().'shop/coach');
-		}
-		else
-		{
-			show_error('参数错误');
 		}
 	}
 	

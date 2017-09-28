@@ -47,13 +47,13 @@ class Area extends My_Controller
 		$this->template->display ( 'sys/area/detail.html', $data );
 	}
 	
-// 	public function get_area_by_city($city_id = 0){
-// 		$city_id = intval($city_id);
-// 		if($city_id){
-// 			$res = $this->area_model->one(array('where'=>array('pid'=>$city_id)),1);
-// 			echo json_encode($res);
-// 		}
-// 	}
+	public function get_area_by_city($city_id = 0){
+		$city_id = intval($city_id);
+		if($city_id){
+			$res = $this->area_model->one(array('where'=>array('pid'=>$city_id)),1);
+			echo json_encode($res);
+		}
+	}
 	
 	public function save($id = '')
 	{
